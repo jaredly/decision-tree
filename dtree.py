@@ -33,13 +33,19 @@ class Node:
             'size': self.size,
             'info': self.information
         }
-        for part, n in self.parts.items():
-            label += '\\n%s: %d' % (part.strip("'"), n)
+        if self.parts:
+            label += '|<f2>'
+            parts = []
+            for part, num in self.parts.items():
+                parts.append('%s: %d' % (part.strip("'"), num))
+            label += '\\n'.join(parts)
         if value:
-            label = value.strip("'") + '\\n' + label
+            label = '{<f0>' + value.strip("'") + '\\n|<f1>' + label
+        else:
+            label = '{<f0>' + label
         if self.attr:
-            label += '\\n%s' % self.attr
-        return name + ' [shape=box,label="' + label + '"]'
+            label += '|<f4>%s' % self.attr
+        return name + ' [shape=record,label="' + label + '}"]'
 
     def dot(self, id=0, value=None):
         '''What do I want?
