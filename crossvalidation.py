@@ -23,6 +23,7 @@ def nfold(meta, data, target, num=10):
 
     test = []
     tries = []
+    nodes = []
     for i in range(num):
         print 'val with', validate, total
         first = ix[:i*validate]
@@ -30,13 +31,17 @@ def nfold(meta, data, target, num=10):
         training = concat([data.loc[first], data.loc[second]])
         validating = data.loc[ix[i*validate:(i+1)*validate]]
         node = Node(meta, training, target)
-        test.append(node.run())
-        tries.append(node.validate(validating)[1])
+        tests = node.run()
+        vals = node.validate(validating)[1]
+        print tests, vals
+        test.append(tests)
+        tries.append(vals)
+        nodes.append(node)
     avg = sum(tries)/len(tries)
     print avg
     node = Node(meta, data, target)
     wrong = node.run()
-    return avg, wrong, node
+    return avg, wrong, node, test, tries, nodes
 
 
 # vim: et sw=4 sts=4
